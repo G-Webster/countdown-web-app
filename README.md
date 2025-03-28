@@ -1,2 +1,2 @@
-# counter-web-app
-A counter web app using plain html, css, and javascript
+# countdown-web-app
+A countdown web app using plain html, css, and javascript
