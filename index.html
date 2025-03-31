@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Web App</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css?v=1.01">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/f46dcf7a32.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container p-1 min-vh-100 d-flex flex-column" style="max-width: 500px; margin: auto;">
+    <div class="container min-vh-100 d-flex flex-column p-0" style="max-width: 500px; margin: auto;">
        <!-- header -->
        <header>
             <div class="d-flex justify-content-between align-items-center p-2">
@@ -32,7 +32,7 @@
        </header>
 
         <!-- display this on top -->
-        <div class="mb-auto p-2">
+        <div class="mb-auto">
         <!-- allow users to input their time -->
         <div class="d-flex justify-content-evenly mb-3">
             <div>
@@ -66,7 +66,7 @@
       
        
           <!-- countdown container -->
-           <div class="my-4" style="width: 100%; margin: auto; ">
+           <div class="mt-2" style="width: 100%; margin: auto; ">
           <div class="border position-relative border-3 text-center fs-1" style="height: 300px; width: 300px; border-radius: 50%; overflow: hidden; margin: auto;"  >
             <div class="position-absolute top-50 start-50 translate-middle  fs-1 fw-semibold" id="counter"></div>
           </div>
@@ -76,12 +76,12 @@
 
            <!-- show a message when a countdown is done -->
            <div rolo="alert" class="alert alert-success my-2" id="msg">
-            Congratulations, count down has completed!
+            <!-- dynamic message -->
            </div>
         </div>
 
     <!-- display this at bottom of screen -->
-     <div class="d-flex justify-content-evenly">
+     <div class="d-flex justify-content-evenly position-sticky bottom-0 p-2 bg-white">
 
       <button class="btn btn-dark rounded-pill px-4 py-2 fs-5" id="startCounterBtn">Start</button>
       <button class="btn btn-danger rounded-pill px-4 py-2 fs-5" id="pauseCounterBtn" style="display: none;">Pause</button>
