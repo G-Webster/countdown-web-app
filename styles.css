@@ -4,57 +4,8 @@ body {
 }
 
 .container {
-    text-align: center;
-    max-width: 500px;
-    margin: 10px auto;
-    padding: 20px;
-    border: 1px #eee solid;
-    border-radius: 10;
-    box-shadow: 1px 1px 5px 4px #eee;
-}
-
-.countdown-container {
-    background-color: cadetblue;
-    font-size: 30px;
-    padding: 20px;
-    max-width: 50px;
-    max-height: 50px;
-    margin: auto;
-    border-radius: 50%;
- 
+    text-align: center; 
+   
 }
 
 
-/* colors */
-.color-white{
-    color: #fff
-}
-
-.color-secondary{
-    color: grey
-}
-
-.color-green {
-    color: green;
-}
-
-/* buttons */
-.button-secondary {
-    padding: 10px 15px;
-    cursor: pointer;
-    border: 1px #ddd solid;
-    border-radius: 10px;
-    margin: 10px;
-}
-
-.button-secondary:hover {
-    background-color: #ddd;
-}
-
-/* message container */
-.msg-container {
-    margin: 10px;
-    background-color: #ddd;
-    padding: 10px;
-    border-radius: 10px;
-}
