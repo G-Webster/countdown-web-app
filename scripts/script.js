@@ -22,7 +22,9 @@ let secondsInput;
 let formattedCounter;
 let counter;
 let prevCounterValue; //for resuming when paused
-let secCounter = secondsInput ? secondsInput : 60;
+let secCounter = secondsInput ? secondsInput : 59;
+let minCounter = minutesInput ? minutesInput : 59;
+let minuteTracker = minutesInput ? minutesInput : 59; //for minute tracking when hours are selected
 let message = '';
 
 //counter states for pausing, restarting
@@ -53,6 +55,8 @@ resetCounterBtn.addEventListener('click', resetCountdown);
  minutesSelector.addEventListener('change', function () {
     console.log('MinutesInput: ', this.value);
     minutesInput = this.value;
+    minuteTracker = this.value;
+    minCounter = this.value;
 })
 
 //get seconds input
@@ -60,6 +64,7 @@ resetCounterBtn.addEventListener('click', resetCountdown);
 secondsSelector.addEventListener('change', function () {
     console.log('SecondsInput: ', this.value);
     secondsInput = this.value;
+    secCounter = this.value;
 })
 
 
@@ -74,12 +79,12 @@ function getSumOfSeconds(hours = 0, minutes = 0, seconds = 0) {
         let minuteToSec = minutes * 60; // 1m * 60 = 60s
         let secondsOnly = seconds * 1; // if i just use seconds, somehow i get a 0 added to it
 
-        console.log('seconds: ', secondsOnly);
+        //console.log('seconds: ', secondsOnly);
 
         // seconds remains the same
 
         let sum = hourToSec + minuteToSec + secondsOnly;
-        console.log('sum of seconds: ', sum);
+        //console.log('sum of seconds: ', sum);
         return sum;
  }
 
@@ -120,54 +125,81 @@ resetCounterBtn.style.display = 'block';
 if (counter) {
      //a loop to automate the process
 while(counter >= 0) {
-    console.log(counter);
+   // console.log(counter);
         
     //logic that formats the display of counter, when more than 1 min and more than an hour
 
          // dynamic minutes
          let dynamicMinutes = counter / 60;
+        
           // dynamic hours
           let dynamicHours = counter / 3600;
-          //seconds counter
-          secCounter;
-          secCounter -= 1; // decrease by 1. somehow this just decreases once and while the loop goes on it does not
-          if(secCounter == 1) {
-            //reset sec counter
-            secCounter = 59;
-          }
+
+         
+
+
+        
 
           //i noticed as seconds changed, some decimals are shown so i researched and i found this 
           //converts a number to whole, well its main use is to convert strings to numbers
           dynamicMinutes = parseInt(dynamicMinutes);
           dynamicHours = parseInt(dynamicHours); 
             
-        switch (true) {
-            // if less than 60s or equal
-            case counter  <= 59:
-               formattedCounter = counter;
-               break;
-           // if more than 60s
-            case counter > 59:
-           
-               formattedCounter = `${dynamicMinutes} : ${secCounter}`;
-               break;
-           // if more than or equal 1 hour
-           case counter >= 3600:
-             
-               formattedCounter = `${dynamicHours} : ${dynamicMinutes} : ${secCounter}`;
-               break;
-               default:
-              formattedCounter = counter; 
+        if (counter  < 60) {
+             // if less than 60s or equal
+             formattedCounter = counter < 10 ? '0' + counter : counter;
+        } else if (counter < 3600) {
+            // if more than 60s    
+            formattedCounter = `${dynamicMinutes < 10 ? '0' + dynamicMinutes : dynamicMinutes} : ${secCounter < 10 ? '0' + secCounter : secCounter}`;
+        } else {
+             // if more than or equal 1 hour
+             formattedCounter = `${dynamicHours < 10 ? '0' + dynamicHours : dynamicHours} : ${minCounter < 10 ? '0' + minCounter : minCounter} : ${secCounter < 10 ? '0' + secCounter : secCounter}`;
         }
 
-        console.log(formattedCounter);
+         //minutes if hours are set
+          //we track minutes first and start decreasing by 1
+          minuteTracker -= 1; //decrease it by 1
+         // console.log('minute tracker: ', minuteTracker)
+          
+          // decrease by 1 every 60s/minute
+         if (minuteTracker == -1) {
+            minCounter -= 1;  
+           }
+
+          if(minCounter == -1) {
+            //reset minutes counter
+            minCounter = 59;
+          }
+
+          if(minuteTracker == -1) {
+            //reset minute tracker
+            minuteTracker = 59;
+          }
+
+          //seconds counter
+          secCounter -= 1; // decrease by 1
+          if(secCounter == -1) {
+            //reset sec counter
+            secCounter = 59;
+          }
+   
+
+       // console.log(formattedCounter);
 
         counterValue.innerText = formattedCounter;
         //if countdown is 0, show a message box
         if(counter === 0) {
-            message = "Congratutions, countdown has finished!";
+            message = "Congratutions, task done!";
             messageContainer.style.display = 'block';
             messageContainer.innerText = message; 
+            //hide reset button
+            resetCounterBtn.style.display = 'none';
+            //hide resume button
+            resumeCounterBtn.style.display = 'none';
+            //hide pause button
+            pauseCounterBtn.style.display = 'none';
+            //show start button
+            startCounterBtn.style.display = 'block';
         }
 
         await delayLoopIteration();
@@ -208,6 +240,8 @@ resumeCounterBtn.style.display = 'none';
 resetCounterBtn.style.display = 'none';
 //hide resume button
 resumeCounterBtn.style.display = 'none';
+//hide pause button
+pauseCounterBtn.style.display = 'none';
 //show start button
 startCounterBtn.style.display = 'block';
    
