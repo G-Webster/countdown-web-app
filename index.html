@@ -50,35 +50,49 @@
              <!-- dynamically added -->
               </select>
         </div>
+        
 
         <div>
             <div class="p-2 py-3  text-body-secondary">Seconds</div>
+        
             <select class="form-select fs-1 fw-medium" aria-label="Default select example" id="secondsSelector">
+         
               <option value="0" selected>00</option>
                <!-- dynamically added -->
               </select>
         </div>
            
         </div>
-
-        
-
-      
        
           <!-- countdown container -->
-           <div class="mt-2" style="width: 100%; margin: auto; ">
-          <div class="border position-relative border-3 text-center fs-1" style="height: 300px; width: 300px; border-radius: 50%; overflow: hidden; margin: auto;"  >
-            <div class="position-absolute top-50 start-50 translate-middle  fs-2 fw-semibold" id="counter"></div>
-          </div>
+           <div class="mt-2">
+          <div class="d-flex justify-content-center" >
+            <div class="rounded-container" id="counter"></div> 
            </div>
+         
 
+           <!-- progress bar -->
+       <!-- was used for testing progress logic -->
+           <div class="position-relative" id="progressBarContainer">
+                 
+           </div>
           
 
            <!-- show a message when a countdown is done -->
-           <div rolo="alert" class="alert alert-success my-2" id="msg">
+           <div rolo="alert" class="alert alert-success my-2 fw-medium bg-white border-0" id="successMsg">
             <!-- dynamic message -->
            </div>
+
+           <!-- warning box -->
+            <div class="position-absolute top-50 start-50 translate-middle">
+           <div rolo="alert" class="alert alert-warning my-2 fw-medium" id="warningMsg">
+            <!-- dynamic message -->
+            hello world
+           </div>
+          </div>
+
         </div>
+    </div>
 
     <!-- display this at bottom of screen -->
      <div class="d-flex justify-content-evenly position-sticky bottom-0 p-2 bg-white">

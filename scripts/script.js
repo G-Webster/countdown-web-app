@@ -7,11 +7,15 @@ const resumeCounterBtn = document.getElementById('resumeCounterBtn');
 const resetCounterBtn = document.getElementById('resetCounterBtn');
 
 const counterValue = document.getElementById('counter');
-const messageContainer = document.getElementById('msg');
+const successMessageContainer = document.getElementById('successMsg');
+const warningMessageContainer = document.getElementById('warningMsg');
+
 
 const hoursSelector = document.getElementById('hoursSelector');
 const minutesSelector = document.getElementById('minutesSelector');
 const secondsSelector = document.getElementById('secondsSelector');
+
+const progressBarContainer = document.getElementById('progressBarContainer');
 
 //input values are initialised so we can update them when a user selects
 let hoursInput;
@@ -21,7 +25,9 @@ let secondsInput;
 //dynamic values
 let formattedCounter;
 let counter;
+let fixedCounterValue;
 let prevCounterValue; //for resuming when paused
+
 let secCounter = secondsInput ? secondsInput : 59;
 let minCounter = minutesInput ? minutesInput : 59;
 let minuteTracker = minutesInput ? minutesInput : 59; //for minute tracking when hours are selected
@@ -33,7 +39,11 @@ let delayTimeMs = 1000; // will be used to pause by increasing or reducing the n
 
 //initially render the counter value and hide the message container
 counterValue.innerText = counter ? counter : `⌚`;
-messageContainer.style.display = 'none';
+successMessageContainer.style.display = 'none';
+warningMessageContainer.style.display = 'none';
+
+//progress bar
+let progressBarElement = document.createElement('div');
 
 //click events to the buttons
 
@@ -41,6 +51,8 @@ startCounterBtn.addEventListener('click', startCountdown);
 pauseCounterBtn.addEventListener('click', pauseCountdown);
 resumeCounterBtn.addEventListener('click', resumeCountdown);
 resetCounterBtn.addEventListener('click', resetCountdown);
+
+//disable start button if counter is empty: to-do
 
 
 //get hours input
@@ -66,7 +78,6 @@ secondsSelector.addEventListener('change', function () {
     secondsInput = this.value;
     secCounter = this.value;
 })
-
 
 
 //function that combines hours, minutes, seconds into seconds and returns value
@@ -103,17 +114,41 @@ function delayLoopIteration() {
     })
 }
 
+
+function displayWarningMsg(message) {
+  setTimeout(() => {
+    warningMessageContainer.style.display = 'block';
+    warningMessageContainer.innerText = message;
+  }, 2000)
+  setTimeout(() => {
+    warningMessageContainer.style.display = 'none';
+  }, 5000)
+ 
+}
+
 // function that updates the counter after 1 second and displays in UI
 async function startCountdown() {
+
     
     console.log('starting countdown');
     
+    
     //we need to update the counter here since a user has provided inputs
 counter = prevCounterValue ? prevCounterValue : getSumOfSeconds(hoursInput, minutesInput, secondsInput);
+
+fixedCounterValue = getSumOfSeconds(hoursInput, minutesInput, secondsInput); // for progress to not be disturbed
 console.log('counter value: ', counter);
 
-//hide the msg box initially
-messageContainer.style.display = 'none';
+
+  //if no counter is provided, alert user and stop execution
+  if(!counter) {
+    displayWarningMsg('Please provide the time count!');
+    return;
+    }
+
+//hide the msg boxes initially
+successMessageContainer.style.display = 'none';
+
 
 //hide start button
 startCounterBtn.style.display = 'none';
@@ -189,9 +224,11 @@ while(counter >= 0) {
         counterValue.innerText = formattedCounter;
         //if countdown is 0, show a message box
         if(counter === 0) {
+            counterValue.innerText = `✔️`;
+            counterValue.style.background = '#fff';
             message = "Congratutions, task done!";
-            messageContainer.style.display = 'block';
-            messageContainer.innerText = message; 
+            successMessageContainer.style.display = 'block';
+            successMessageContainer.innerText = message; 
             //hide reset button
             resetCounterBtn.style.display = 'none';
             //hide resume button
@@ -201,7 +238,7 @@ while(counter >= 0) {
             //show start button
             startCounterBtn.style.display = 'block';
         }
-
+        startCountingProgress();
         await delayLoopIteration();
       
      counter--
@@ -244,15 +281,70 @@ resumeCounterBtn.style.display = 'none';
 pauseCounterBtn.style.display = 'none';
 //show start button
 startCounterBtn.style.display = 'block';
-   
+
+//remove progress
+//progressBarContainer.removeChild(progressBarElement);
+counterValue.style.background = '#fff';
+
+
     console.log('resetting countdown');
     delayTimeMs = 1000; // 1 second
     prevCounterValue = 0; // set previous value
     counter = 0; // set previous value
     counterValue.innerText = `⌚`;
    // startCountdown();
+   
     
  }
+
+//  show progress bar
+
+/* basic math/logic:
+ we need a total of count value in seconds(100%), then while
+ it decreases, we decrease the percentage by current value
+ */
+ let startPercentage; //for progress
+
+
+ /*
+ this function takes total amount of counter 
+ that the user selects initially(initialValue) 
+ and current value of counter as the counter is 
+ running (currentValue) then we use this to determine
+ the percentage that has decreased from 100 as the
+ timer runs
+ */
+function findCurrentPercentage(initialValue, currentValue) {
+ 
+  let percentageValue;
+
+  percentageValue = (currentValue * 100) / initialValue;
+
+  return percentageValue;
+}
+
+
+
+function startCountingProgress() {
+  //  console.log('initialCount: ', fixedCounterValue);
+  //  console.log('currentCount: ', counter);
+
+   startPercentage = findCurrentPercentage(parseInt(fixedCounterValue), parseInt(counter))
+   console.log('progress %: ', startPercentage);
+
+//populate the div: DEPRECATED: this logic was used for testing the progress logic
+
+// progressBarElement.setAttribute('style',
+//   `border-top: 2px red solid; width: ${startPercentage}%;`)
+// progressBarContainer.appendChild(progressBarElement);
+
+//update: we now use rounded circle
+counterValue.style.background = `conic-gradient(#eee ${startPercentage}% 0%, #a3c3f7 0% 100%)`;
+
+ 
+}
+
+
 
 
 

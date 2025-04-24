@@ -9,3 +9,25 @@ body {
 }
 
 
+
+.rounded-container {
+    width: 250px;
+    height: 250px;
+    border: 2px #ddd solid;
+/* 
+ conic-gradient creates a pie like
+ structure that allows colors to fill from a certain angle to a certain angle(0 -360)
+*/
+/* background: conic-gradient(#bbb 90% 0%, skyblue 0% 100%); 
+will be dynamic with js
+    */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #03204d;
+}
+
+
